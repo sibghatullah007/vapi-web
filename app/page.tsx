@@ -9,29 +9,55 @@ export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
   const [callActive, setCallActive] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [currentCallId, setCurrentCallId] = useState<string | null>(null);
   const vapiRef = useRef<Vapi | null>(null);
-
-  useEffect(() => {
-    // Remove old custom style injection (now using Tailwind)
-  }, []);
+  const callIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (!vapiRef.current) {
       vapiRef.current = new Vapi(API_KEY);
-      vapiRef.current.on("call-start", () => {
+      vapiRef.current.on("call-start", (...args: any[]) => {
+        const call = args[0];
+        if (call && typeof call === "object" && "id" in call) {
+          setCurrentCallId(call.id);
+          callIdRef.current = call.id;
+        }
         setLoading(false);
         setCallActive(true);
       });
-      vapiRef.current.on("call-end", () => {
+      vapiRef.current.on("call-end", async () => {
+        setLoading(true);
         setCallActive(false);
         setModalOpen(true);
+        const callId = callIdRef.current;
+        if (callId) {
+          const response = await fetch(`https://api.vapi.ai/call/${callId}`, {
+            headers: {
+              'Authorization': `Bearer ${API_KEY}`,
+              'Content-Type': 'application/json',
+            },
+          });
+          if (response.ok) {
+            const data = await response.json();
+            if (data.transcript) {
+              console.log('Call Transcript:', data.transcript);
+            } else {
+              console.log('Transcript not found in response:', data);
+            }
+          } else {
+            console.error('Failed to fetch transcript:', response.status, response.statusText);
+          }
+        } else {
+          console.log('No call id available for transcript fetch.');
+        }
+        setLoading(false);
       });
       vapiRef.current.on("error", (e: unknown) => {
         setLoading(false);
         console.error(e);
       });
     }
-  }, []);
+  }, [currentCallId]);
 
   const handleStartCall = () => {
     setLoading(true);
