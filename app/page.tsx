@@ -9,7 +9,7 @@ export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
   const [callActive, setCallActive] = useState(false);
   const [loading, setLoading] = useState(false);
-  const vapiRef = useRef<any>(null);
+  const vapiRef = useRef<Vapi | null>(null);
 
   useEffect(() => {
     // Remove old custom style injection (now using Tailwind)
@@ -26,9 +26,8 @@ export default function Home() {
         setCallActive(false);
         setModalOpen(true);
       });
-      vapiRef.current.on("error", (e: any) => {
+      vapiRef.current.on("error", (e: unknown) => {
         setLoading(false);
-        // eslint-disable-next-line no-console
         console.error(e);
       });
     }
@@ -84,7 +83,7 @@ export default function Home() {
         </h2>
         <div style={{ textAlign: "left" }}>
           <p style={{ margin: "0.5rem 0" }}><strong>Score:</strong> 8/10</p>
-          <p style={{ margin: "0.5rem 0" }}><strong>Feedback:</strong> Great tone and clear scheduling, but didn't confirm insurance clearly. The call was friendly and confident, offered appointment options, and ended well, but insurance details were unclear.</p>
+          <p style={{ margin: "0.5rem 0" }}><strong>Feedback:</strong> Great tone and clear scheduling, but didn&apos;t confirm insurance clearly. The call was friendly and confident, offered appointment options, and ended well, but insurance details were unclear.</p>
         </div>
         <div style={{ textAlign: "center", marginTop: "1.5rem" }}>
           <button
