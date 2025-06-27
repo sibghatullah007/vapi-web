@@ -15,11 +15,29 @@ export default function EmbedPage() {
     const allowedDomain = 'patient-phone-pro.learnworlds.com';
     const referrer = document.referrer;
     
-    if (referrer && referrer.includes(allowedDomain)) {
+    // For debugging
+    console.log('Client-side referrer check:');
+    console.log('Document referrer:', referrer);
+    console.log('Window location:', window.location.href);
+    console.log('Parent window:', window.parent !== window);
+    
+    // Check if we're in an iframe
+    const isInIframe = window.parent !== window;
+    const hasValidReferrer = referrer && referrer.includes(allowedDomain);
+    
+    // Allow access if:
+    // 1. We're in an iframe (likely from LearnWorlds), OR
+    // 2. We have a valid referrer from LearnWorlds
+    if (isInIframe || hasValidReferrer) {
       setIsAuthorized(true);
     } else {
-      // If no referrer or wrong domain, show access denied
-      setIsAuthorized(false);
+      // Only block if we have a clear referrer from a different domain
+      if (referrer && !referrer.includes(allowedDomain)) {
+        setIsAuthorized(false);
+      } else {
+        // No referrer or empty referrer - allow access (iframe case)
+        setIsAuthorized(true);
+      }
     }
     setIsLoading(false);
   }, []);
@@ -50,6 +68,9 @@ export default function EmbedPage() {
       }}>
         <h2>Access Denied</h2>
         <p>This content can only be accessed from authorized domains.</p>
+        <p style={{ fontSize: '12px', color: '#999', marginTop: '10px' }}>
+          Referrer: {document.referrer || 'None'}
+        </p>
       </div>
     );
   }
