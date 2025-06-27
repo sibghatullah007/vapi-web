@@ -1,60 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Vapi Web Widget
 
-# Vapi AI Web Integration
+A Next.js application that provides a voice AI widget with call analysis capabilities using Vapi and OpenAI.
 
-This Next.js app integrates the [Vapi AI Web Widget](https://docs.vapi.ai/quickstart/web) for real-time voice assistants.
+## Features
+
+- 🎤 Voice AI integration with Vapi
+- 📊 Real-time call transcript collection
+- 🤖 AI-powered call performance analysis
+- 📱 Responsive widget design
+- 🔒 Secure API key management
+- 📄 Call reports with detailed feedback
 
 ## Setup
 
-1. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-2. **Configure Vapi AI:**
-   - Open `app/page.tsx`.
-   - Replace `your_public_api_key` with your Vapi public API key.
-   - Replace `assistant_id` with your Assistant ID from the Vapi dashboard.
+### 1. Environment Variables
 
-3. **Run the app:**
-   ```bash
-   npm run dev
-   ```
+Create a `.env.local` file in the root directory with the following variables:
 
-## References
-- [Vapi AI Web Quickstart](https://docs.vapi.ai/quickstart/web)
-- [Vapi AI Documentation](https://docs.vapi.ai/)
+```env
+# Vapi API Configuration
+NEXT_PUBLIC_VAPI_API_KEY=your_vapi_api_key_here
+NEXT_PUBLIC_VAPI_ASSISTANT_ID=your_vapi_assistant_id_here
 
-## Getting Started
+# OpenAI API Configuration
+NEXT_PUBLIC_OPENAI_API_KEY=your_openai_api_key_here
+```
 
-First, run the development server:
+### 2. Installation
+
+```bash
+npm install
+```
+
+### 3. Development
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 4. Build
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Usage
 
-## Learn More
+### Main Page
+- Visit `/` for the main application
+- Features a centered call button with modal report
 
-To learn more about Next.js, take a look at the following resources:
+### Embed Widget
+- Visit `/embed` for the embeddable widget
+- Can be embedded in other websites via iframe
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Iframe Embed
+```html
+<iframe
+  src="https://your-domain.vercel.app/embed"
+  width="400"
+  height="500"
+  style="border:none;"
+  allow="camera; microphone; clipboard-write; fullscreen; publickey-credentials-get"
+></iframe>
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Call Analysis
 
-## Deploy on Vercel
+The application analyzes calls based on 5 criteria:
+1. **Tone & Friendliness** - Warmth and confidence
+2. **Insurance Handling** - Insurance knowledge and clarity
+3. **Appointment Offer** - Scheduling effectiveness
+4. **Clarity & Next Steps** - Call clarity and next steps
+5. **Call Closing** - Proper call conclusion
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Each criterion is scored 1-10, with an overall average score and coaching feedback.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Security
+
+- API keys are stored in environment variables
+- `.env*` files are automatically ignored by git
+- Use `NEXT_PUBLIC_` prefix for client-side access
+
+## Deployment
+
+The application is configured for Vercel deployment. Environment variables should be set in your Vercel project settings.
+
+## Technologies
+
+- Next.js 14
+- React 18
+- TypeScript
+- Vapi Web SDK
+- OpenAI API
+- Tailwind CSS
