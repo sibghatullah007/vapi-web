@@ -17,10 +17,10 @@ export default function AccessDeniedPage() {
         boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
         maxWidth: "400px"
       }}>
-        <h1 style={{ color: "#e74c3c", marginBottom: "1rem" }}>🔒 Access Denied</h1>
+        <h1 style={{ color: "#e74c3c", marginBottom: "1rem" }}>Access Denied</h1>
         <p style={{ color: "#666", lineHeight: "1.6" }}>
           This content can only be accessed from authorized domains. 
-          Please ensure you're accessing this page from the correct source.
+          Please ensure you are accessing this page from the correct source.
         </p>
       </div>
     </div>
